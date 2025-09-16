@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,16 +29,24 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.example.recipeapp.room.RoomVM
 
 @Composable
-fun RecipeScreenHai(categoryState: RecipeViewModel.RecipeState,navigateToSecond:(Category)->Unit){
-     Box(modifier = Modifier.fillMaxSize().padding(16.dp),
-         contentAlignment = Alignment.Center){
+fun RecipeScreenHai(viewModel: RecipeViewModel,navigateToSecond:(Category)->Unit){
+    val roomVm: RoomVM = viewModel()
+     Column(modifier = Modifier.fillMaxSize().padding(top = 40.dp),
+         horizontalAlignment = Alignment.CenterHorizontally){
+         val categoryState = viewModel.categoryState.value
+         Button(onClick = {
+             viewModel.fetchCategory(roomVm)
+         }){
+             Text("Get Recipe")
+         }
         when{
             (categoryState.loading)-> {
                 CircularProgressIndicator(strokeWidth = 32.dp)
             }
-            (categoryState.error!=null)->{
+            (categoryState.error!=null && categoryState.error!="offline")->{
                 Text("Error 404",
                     textAlign = TextAlign.Center,
                     fontSize = 32.sp,
@@ -45,7 +54,8 @@ fun RecipeScreenHai(categoryState: RecipeViewModel.RecipeState,navigateToSecond:
                     fontStyle = FontStyle.Italic,
                     color = Color.Gray)
             }
-            else->{
+            (categoryState.recipeList.isNotEmpty() || categoryState.error=="offline")->{
+                if(categoryState.error=="offline") Text("Offline")
                 CategoryScreen(categoryState.recipeList,navigateToSecond)
             }
         }

@@ -1,6 +1,8 @@
 package com.example.recipeapp
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 
@@ -16,9 +18,12 @@ data class CategoryResponse(
     val categories : List<Category>
 )
 
-
-
-//"idCategory": "1",
-////      "strCategory": "Beef",
-////      "strCategoryThumb": "https://www.themealdb.com/images/category/beef.png",
-////      "strCategoryDescription":
+@Entity("category_table")
+data class OfflineCategory(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val idCategory: String,
+    val strCategory: String,
+    val strCategoryThumb: String,
+    val strCategoryDescription: String
+)

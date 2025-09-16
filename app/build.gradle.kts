@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
         id("kotlin-parcelize")
-
+        id("kotlin-kapt")
 }
 
 android {
@@ -43,6 +43,14 @@ android {
 
 dependencies {
 
+    //    //Room Data Base
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+// optional - Testing Room databases
+    testImplementation("androidx.room:room-testing:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+//    plugins {
+//
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)

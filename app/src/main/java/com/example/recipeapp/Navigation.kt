@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun Navigation(){
     val viewModel: RecipeViewModel= viewModel()
-    val recipeState= viewModel.categoryState.value
+    val recipeState= viewModel
     val navController= rememberNavController()
     NavHost(navController,Routes.RecipeScreen.routes){
         composable(Routes.RecipeScreen.routes){
